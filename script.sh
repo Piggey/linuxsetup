@@ -9,4 +9,6 @@ sudo apt-get update
 sudo apt-get install -y codeblocks codeblocks-contrib
 sudo snap install vlc
 sudo snap install libreoffice
+sudo snap install qbittorrent-arnatious --beta
+sudo apt install -y gnome-tweaker
 echo -------- downloading successful! --------
