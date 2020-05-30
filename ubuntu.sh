@@ -11,4 +11,5 @@ sudo snap install vlc
 sudo snap install libreoffice
 sudo snap install qbittorrent-arnatious --beta
 sudo apt install -y gnome-tweaker
+sudo apt-get update && sudo apt-get upgrade
 echo -------- downloading successful! --------
