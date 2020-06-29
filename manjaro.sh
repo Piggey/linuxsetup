@@ -8,5 +8,7 @@ sudo pacman -S codeblocks --noconfirm
 sudo snap install vlc
 sudo snap install libreoffice
 sudo pacman -S qbittorrent --noconfirm
+sudo pacman -S jre8-openjdk --noconfirm
+sudo pacman -S jdk8-openjdk --noconfirm
 sudo pacman -Syu
 echo bye
