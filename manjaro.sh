@@ -1,4 +1,5 @@
 echo hi
+sudo pacman -S snapd --noconfirm
 sudo snap install chromium
 sudo snap install code --classic
 sudo snap install discord
