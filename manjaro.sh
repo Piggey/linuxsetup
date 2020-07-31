@@ -5,6 +5,7 @@ sudo systemctl restart snapd.service
 
 sudo pacman -S chromium --noconfirm
 sudo pacman -R firefox --noconfirm
+sudo pacman -R yakuake --noconfirm
 
 sudo pacman -S code --noconfirm
 sudo pacman -S discord --noconfirm
