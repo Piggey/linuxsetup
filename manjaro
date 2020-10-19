@@ -1,0 +1,33 @@
+#!/bin/bash
+
+[ $EUID -ne 0 ] && echo "Please run as root"; exit 1
+
+echo "installing apps and removing unnecessary ones"
+pacman -S yay
+yay -S spotify --noconfirm
+
+pacman -S chromium --noconfirm
+pacman -R firefox --noconfirm
+pacman -R yakuake --noconfirm
+
+pacman -S code --noconfirm
+pacman -S discord --noconfirm
+
+pacman -S steam-native --noconfirm
+pacman -S lutris --noconfirm
+
+pacman -S codeblocks --noconfirm
+pacman -S vlc --noconfirm
+pacman -S libreoffice-fresh --noconfirm
+pacman -S qbittorrent --noconfirm
+
+pacman -S jre8-openjdk --noconfirm
+pacman -S jdk8-openjdk --noconfirm
+
+pacman -Syu --noconfirm
+
+echo "moving scripts to PATH"
+
+mv cvrtdsa.py jpg2pdf scan /usr/lib
+
+echo "done!"

@@ -1,0 +1,61 @@
+#!/bin/bash
+
+Num=0
+sFiles=()
+
+function start_scan ()
+{
+    Device="hpaio:/usb/DeskJet_2130_series?serial=CN5CA4B4RS067S"
+    echo "Scanning #$Num"
+    FileName="/tmp/Scanned/img$Num.png"
+    hp-scan -d $Device -l error --size=a4 -o $FileName
+    Num=$((Num+1))
+    sFiles+=("$FileName")
+    return 0
+}
+
+function rotate ()
+{
+    convert "$1" -rotate 180 "$1"
+    return 0
+}
+
+function print_help ()
+{
+    echo -e "USAGE: \nscan -n [NUMBERS OF PAGES] -r [ROTATE PAGES FROM FIRST(flag)] -c [FILENAME.pdf]"
+    exit 1
+}
+
+[ $# -eq 0 ] && print_help
+
+while getopts "n:rc:h" arg; do
+    case $arg in
+        n) Pages="$OPTARG";;
+        r) Rotate="true";;
+        c) Cvrt="$OPTARG";;
+        h) print_help;;
+    esac
+done
+
+echo "Number of pages to print: $Pages"
+[ "$Rotate" == "true" ] && echo "rotating image staring from the first scan"
+
+
+for (( i=0; i<$Pages; i++ ))
+do
+    start_scan
+    [ "$Rotate" == "true" ] && [ $(($i%2)) == 0 ] && rotate /tmp/Scanned/img$i.png
+    [ -z $Rotate ] && [ $(($i%2)) == 1 ] && rotate /tmp/Scanned/img$i.png
+    echo -e "\n sleeping for 5 seconds..."
+    sleep 5s
+
+done
+
+echo "sending images to jpg2pdf converter"
+[ ! -z $Cvrt ] && jpg2pdf $Cvrt ${sFiles[@]}
+
+echo "cleaning up the mess"
+for file in "${sFiles[@]}"; 
+do
+    rm $file
+done

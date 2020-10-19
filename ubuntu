@@ -1,0 +1,19 @@
+#!/bin/bash
+
+[ $EUID -ne 0 ] && echo "Please run as root"; exit 1
+
+snap install chromium
+snap install code --classic
+snap install discord
+snap install spotify
+apt install -y python3
+apt install -y python3-pip
+add-apt-repository ppa:codeblocks-devs/release
+apt-get update
+apt-get install -y codeblocks codeblocks-contrib
+snap install vlc
+snap install libreoffice
+snap install qbittorrent-arnatious --beta
+apt install -y gnome-tweaker
+apt-get update && apt-get upgrade
+echo -------- downloading successful! --------
