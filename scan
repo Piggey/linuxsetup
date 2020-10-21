@@ -1,15 +1,11 @@
 #!/bin/bash
 
-Num=0
-Size="a4"
-sFiles=()
-
 function start_scan ()
 {
     Device="hpaio:/usb/DeskJet_2130_series?serial=CN5CA4B4RS067S"
     echo "Scanning #$Num"
-    FileName="/tmp/Scanned/img$Num.png"
-    hp-scan -d $Device -l error --size=$Size -o $FileName
+    FileName="/tmp/scanfiles/img$Num.png"
+    hp-scan -d $Device -l error --res=150 --size=$Size -o $FileName
     Num=$((Num+1))
     sFiles+=("$FileName")
     return 0
@@ -29,6 +25,12 @@ function print_help ()
 
 [ $# -eq 0 ] && print_help
 
+
+mkdir /tmp/scanfiles
+Num=0
+Size="a4"
+sFiles=()
+
 while getopts "n:rc:s:h" arg; do
     case $arg in
         n) Pages="$OPTARG";;
@@ -47,17 +49,21 @@ echo "Size set to $Size"
 for (( i=0; i<$Pages; i++ ))
 do
     start_scan
-    [ "$Rotate" == "true" ] && [ $(($i%2)) == 0 ] && rotate /tmp/Scanned/img$i.png
-    [ -z $Rotate ] && [ $(($i%2)) == 1 ] && rotate /tmp/Scanned/img$i.png
-    echo -e "\n sleeping for 5 seconds..."
-    sleep 5s
+    [ "$Rotate" == "true" ] && [ $(($i%2)) == 0 ] && rotate /tmp/scanfiles/img$i.png
+    [ -z $Rotate ] && [ $(($i%2)) == 1 ] && rotate /tmp/scanfiles/img$i.png
+    [ $i -ne $(($Pages-1)) ] && echo -e "\nsleeping for 5 seconds." && sleep 5
 done
 
-echo "sending images to jpg2pdf converter"
-[ ! -z $Cvrt ] && jpg2pdf $Cvrt ${sFiles[@]}
+if [ ! -z $Cvrt ]
+then
+    echo -e "\nsending images to jpg2pdf converter"
+    jpg2pdf $Cvrt ${sFiles[@]}
+    echo -e "\ncleaning up"
+    for file in "${sFiles[@]}"; 
+    do
+        rm $file
+    done
+    rmdir /tmp/scanfiles
+fi
 
-echo "cleaning up the mess"
-for file in "${sFiles[@]}"; 
-do
-    rm $file
-done
+echo -e "\nexiting"
