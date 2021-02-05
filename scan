@@ -2,19 +2,18 @@
 
 function start_scan ()
 {
-    Device="hpaio:/usb/DeskJet_2130_series?serial=CN5CA4B4RS067S"
+    # Device="hpaio:/usb/DeskJet_2130_series?serial=CN5CA4B4RS067S"
+    Device="hp:/net/DeskJet_2700_series?ip=192.168.1.5"
     echo "Scanning #$Num"
     FileName="/tmp/scanfiles/img$Num.png"
     hp-scan -d $Device -l error --res=150 --size=$Size -o $FileName
     Num=$((Num+1))
     sFiles+=("$FileName")
-    return 0
 }
 
 function rotate ()
 {
     convert "$1" -rotate 180 "$1"
-    return 0
 }
 
 function print_help ()
@@ -23,10 +22,14 @@ function print_help ()
     exit 1
 }
 
+function convert_pdf ()
+{
+    python /usr/bin/cvrt.py "$@"
+}
+
 [ $# -eq 0 ] && print_help
 
-
-mkdir /tmp/scanfiles
+[ ! -d "/tmp/scanfiles" ] && mkdir /tmp/scanfiles
 Num=0
 Size="a4"
 sFiles=()
@@ -38,6 +41,7 @@ while getopts "n:rc:s:h" arg; do
         c) Cvrt="$OPTARG";;
         s) Size="$OPTARG";;
         h) print_help;;
+        *) print_help;;
     esac
 done
 
@@ -57,7 +61,7 @@ done
 if [ ! -z $Cvrt ]
 then
     echo -e "\nsending images to jpg2pdf converter"
-    jpg2pdf $Cvrt ${sFiles[@]}
+    convert_pdf $Cvrt "${sFiles[@]}"
     echo -e "\ncleaning up"
     for file in "${sFiles[@]}"; 
     do

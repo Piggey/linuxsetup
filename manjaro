@@ -1,33 +1,26 @@
 #!/bin/bash
 
-[ $EUID -ne 0 ] && echo "Please run as root"; exit 1
+[ $EUID -ne 0 ] && echo "Please run as root" && exit 1
+
+installApps=("yay" "chromium" "code" "discord" "steam-native" "lutris" "vlc" "libreoffice-fresh" "qbittorrent" "jre8-openjdk" "jdk8-openjdk")
+removeApps=("firefox" "yakuake")
 
 echo "installing apps and removing unnecessary ones"
-pacman -S yay
-yay -S spotify --noconfirm
+for app in "${installApps[@]}"
+do
+    pacman -S $app --noconfirm
+done
 
-pacman -S chromium --noconfirm
-pacman -R firefox --noconfirm
-pacman -R yakuake --noconfirm
+for app in "${removeApps[@]}"
+do
+    pacman -R $app --noconfirm
+done
 
-pacman -S code --noconfirm
-pacman -S discord --noconfirm
-
-pacman -S steam-native --noconfirm
-pacman -S lutris --noconfirm
-
-pacman -S codeblocks --noconfirm
-pacman -S vlc --noconfirm
-pacman -S libreoffice-fresh --noconfirm
-pacman -S qbittorrent --noconfirm
-
-pacman -S jre8-openjdk --noconfirm
-pacman -S jdk8-openjdk --noconfirm
-
+# update all installed apps
 pacman -Syu --noconfirm
 
 echo "moving scripts to PATH"
-
-mv cvrtdsa.py jpg2pdf scan /usr/lib
+mv cvrt.py scan /usr/bin/
 
 echo "done!"
+exit 0
