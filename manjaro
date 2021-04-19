@@ -14,7 +14,8 @@ do
 done
 
 # install yay packages
-yay -S $yayInstallApps --noconfirm
+user=$(ls /home/)
+su $user -c "yay -S $yayInstallApps --noconfirm"
 
 echo "removing..."
 for app in "${removeApps[@]}"
