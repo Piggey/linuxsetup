@@ -2,15 +2,21 @@
 
 [ $EUID -ne 0 ] && echo "Please run as root" && exit 1
 
-installApps=("yay" "chromium" "code" "discord" "steam-native" "lutris" "vlc" "libreoffice-fresh" "qbittorrent" "jre8-openjdk" "jdk8-openjdk")
+installApps=("yay" "flameshot" "hplip" "cups" "neovim" "code" "discord" "steam-native" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
 removeApps=("firefox" "yakuake")
+yayInstallApps=("google-chrome" "teams" "spotify")
 
-echo "installing apps and removing unnecessary ones"
+echo "installing..."
+# install pacman packages
 for app in "${installApps[@]}"
 do
     pacman -S $app --noconfirm
 done
 
+# install yay packages
+yay -S $yayInstallApps --noconfirm
+
+echo "removing..."
 for app in "${removeApps[@]}"
 do
     pacman -R $app --noconfirm
@@ -21,6 +27,9 @@ pacman -Syu --noconfirm
 
 echo "moving scripts to PATH"
 mv cvrt.py scan /usr/bin/
+
+# apparently i have to do this when on gnome
+[ $GDMSESSION -eq 'gnome' ] && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 
 echo "done!"
 exit 0
