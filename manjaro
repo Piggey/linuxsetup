@@ -2,9 +2,17 @@
 
 [ $EUID -ne 0 ] && echo "Please run as root" && exit 1
 
-installApps=("yay" "flameshot" "hplip" "cups" "neovim" "code" "discord" "steam-native" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
+installApps=("yay" "flameshot" "hplip" "cups" "vim" "code" "discord" "steam-native" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
 removeApps=("firefox" "yakuake")
 yayInstallApps=("google-chrome" "teams" "spotify")
+
+function add_plugins ()
+{
+    $installApps+=("xfce4-cpugraph-plugin" "xfce4-cpufreq-plugin")
+}
+
+# install plugin in case of xfce desktop environment
+[ $DESKTOP_SESSION -eq 'xfce' ] && add_plugins()
 
 echo "installing..."
 # install pacman packages
@@ -30,7 +38,7 @@ echo "moving scripts to PATH"
 mv cvrt.py scan /usr/bin/
 
 # apparently i have to do this when on gnome
-[ $GDMSESSION -eq 'gnome' ] && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
+[ $DESKTOP_SESSION -eq 'gnome' ] && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 
 echo "done!"
 exit 0
