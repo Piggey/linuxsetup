@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function start_scan ()
 {
     # Device="hpaio:/usb/DeskJet_2130_series?serial=CN5CA4B4RS067S"
-    Device="hpaio:/net/DeskJet_2700_series?ip=192.168.1.5"
+    # Device="hpaio:/net/DeskJet_2700_series?ip=192.168.1.5"
+    Device="hpaio:/net/DeskJet_2700_series?ip=192.168.1.1"
     echo "Scanning #$Num"
     FileName="/tmp/scanfiles/img$Num.png"
     hp-scan -d $Device -l error --res=150 --size=$Size -o $FileName
