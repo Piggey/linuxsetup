@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-[ $EUID -ne 0 ] && echo "Please run as root" && exit 1
+[ $EUID -ne 0 ] && echo "[!] Please run as root" && exit 1
 
-installApps=("yay" "lazygit" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
-removeApps=("firefox" "yakuake")
+installApps=("yay" "lazygit" "gcc" "cmake" "make" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
 yayInstallApps=("google-chrome" "teams" "spotify")
 
 echo "[*] detected desktop session: $DESKTOP_SESSION"
@@ -26,10 +25,6 @@ echo "[*] extracting Telegram"
 tar xf linux* --directory /opt --checkpoint=.200
 ln -s /opt/Telegram/Telegram /usr/bin/Telegram
 
-# remove some packages 
-echo "[*] removing pacman packages"
-pacman -R --noconfirm $removeApps
-
 # update all installed apps
 pacman -Sqyu --noconfirm
 
@@ -45,11 +40,19 @@ hp-plugin -i
 
 if [ $DESKTOP_SESSION = 'i3' ]; then
     echo "[*] setting up i3 desktop environment"
-    installApps=(light dunst polybar alacritty xclip thunar scrot feh ttf-iosevka-nerd xfce4-settings mpd)
+    installApps=(light dunst polybar alacritty xclip thunar scrot feh ttf-iosevka-nerd xfce4-settings mpd lxrandr)
     pacman -Sq --noconfirm $installApps
 
+    yay -Sq --noconfirm i3lock-color
+
     # move dotfiles to $HOME
+    echo "[*] moving configuration files to /home/$user"
     cp -rf .vimrc .local .config /home/$user
+
+    # setup monitor config if more than one monitor
+    num_monitors=$(xrandr --listactivemonitors | head -n 1 | tr -d 'Monitors: ')
+    echo "[*] Numer of monitors detected: $num_monitors"
+    [ $num_monitors -ge 2 ] && lxrandr
 fi
     
     
