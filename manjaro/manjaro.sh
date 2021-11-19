@@ -31,8 +31,10 @@ sudo ln -s /opt/Telegram/Telegram /usr/bin/Telegram
 # update all installed apps
 sudo pacman -Sqyu --noconfirm
 
-echo "[*] moving printer scripts to PATH"
-mv cvrt.py scan /usr/bin/
+echo "[*] adding printer scripts to PATH"
+chmod +x scan
+sudo ln -s $currentDirectory/scan /usr/bin/scan
+sudo ln -s $currentDirectory/cvrt.py /usr/bin/cvrt.py
 
 echo "[*] installing printer"
 hp-setup -i -a -x HP9DFFEC.home 
