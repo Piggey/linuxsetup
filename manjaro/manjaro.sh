@@ -23,9 +23,10 @@ yay -Sq --noconfirm ${yayInstallApp[@]}
 
 # install Telegram
 echo "[*] installing Telegram"
+# TODO: skip unnecessary downloading if file already exists
 wget -q --show-progress -P /tmp https://telegram.org/dl/desktop/linux
 echo "[*] extracting Telegram"
-tar xf linux* --directory /opt --checkpoint=.200
+tar xf ^linux --directory /opt --checkpoint=.200
 sudo ln -s /opt/Telegram/Telegram /usr/bin/Telegram
 
 # update all installed apps
