@@ -49,8 +49,8 @@ if [[ $DESKTOP_SESSION == i3 ]]; then
     yay -Sq --noconfirm i3lock-color
 
     # move dotfiles to $HOME
-    echo "[*] moving configuration files to /home/$user"
-    cp -rf .vimrc .local .config /home/$user
+    echo "[*] moving configuration files to /home/$USER"
+    cp -rf .vimrc .local .config /home/$USER
 
     # setup monitor config if more than one monitor
     num_monitors=$(xrandr --listactivemonitors | head -n 1 | tr -d 'Monitors: ')
