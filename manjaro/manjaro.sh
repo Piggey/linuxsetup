@@ -2,13 +2,17 @@
 
 [ $EUID -eq 0 ] && echo "[!] Please do not run as root" && exit 1
 
+currentDirectory=$(pwd)
+
 installApps=("yay" "lazygit" "gcc" "cmake" "make" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
 yayInstallApps=("google-chrome" "teams" "spotify")
 
 echo "[*] detected desktop session: $DESKTOP_SESSION"
 
 # install plugin in case of xfce desktop environment
-[ $DESKTOP_SESSION -eq 'xfce' ] && $installApps+=("xfce4-cpugraph-plugin" "xfce4-cpufreq-plugin")
+if [ "$DESKTOP_SESSION" == 'xfce' ]; then
+	installApps+=('xfce4-cpugraph-plugin' 'xfce4-cpufreq-plugin')
+fi
 
 # install pacman packages
 echo "[*] installing pacman packages"
@@ -35,9 +39,9 @@ hp-setup -i -a -x HP9DFFEC.home
 hp-plugin -i
 
 # apparently i have to do this when on gnome
-[ $DESKTOP_SESSION = 'gnome' ] && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
+[[ $DESKTOP_SESSION == gnome ]] && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 
-if [ $DESKTOP_SESSION = 'i3' ]; then
+if [[ $DESKTOP_SESSION == i3 ]]; then
     echo "[*] setting up i3 desktop environment"
     installApps=(light dunst polybar alacritty xclip thunar scrot feh ttf-iosevka-nerd xfce4-settings mpd lxrandr)
     sudo pacman -Sq --noconfirm ${installApps[@]}
@@ -54,6 +58,6 @@ if [ $DESKTOP_SESSION = 'i3' ]; then
     [ $num_monitors -ge 2 ] && lxrandr
 fi
     
-    
 echo "[*] done!"
 exit 0
+
