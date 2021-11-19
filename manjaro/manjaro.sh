@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[ $EUID -ne 0 ] && echo "[!] Please run as root" && exit 1
+[ $EUID -eq 0 ] && echo "[!] Please do not run as root" && exit 1
 
 installApps=("yay" "lazygit" "gcc" "cmake" "make" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
 yayInstallApps=("google-chrome" "teams" "spotify")
@@ -12,21 +12,20 @@ echo "[*] detected desktop session: $DESKTOP_SESSION"
 
 # install pacman packages
 echo "[*] installing pacman packages"
-pacman -Sq --noconfirm $installApps
+sudo pacman -Sq --noconfirm ${installApps[@]}
 
 # install yay packages
-user=$(users)
-su $user -c "yay -Sq $yayInstallApps --noconfirm"
+yay -Sq --noconfirm ${yayInstallApp[@]}
 
 # install Telegram
 echo "[*] installing Telegram"
 wget -q --show-progress -P /tmp https://telegram.org/dl/desktop/linux
 echo "[*] extracting Telegram"
 tar xf linux* --directory /opt --checkpoint=.200
-ln -s /opt/Telegram/Telegram /usr/bin/Telegram
+sudo ln -s /opt/Telegram/Telegram /usr/bin/Telegram
 
 # update all installed apps
-pacman -Sqyu --noconfirm
+sudo pacman -Sqyu --noconfirm
 
 echo "[*] moving printer scripts to PATH"
 mv cvrt.py scan /usr/bin/
@@ -41,7 +40,7 @@ hp-plugin -i
 if [ $DESKTOP_SESSION = 'i3' ]; then
     echo "[*] setting up i3 desktop environment"
     installApps=(light dunst polybar alacritty xclip thunar scrot feh ttf-iosevka-nerd xfce4-settings mpd lxrandr)
-    pacman -Sq --noconfirm $installApps
+    sudo pacman -Sq --noconfirm ${installApps[@]}
 
     yay -Sq --noconfirm i3lock-color
 
