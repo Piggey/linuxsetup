@@ -2,7 +2,7 @@
 
 [ $EUID -eq 0 ] && echo "[!] Please do not run as root" && exit 1
 
-currentDirectory=$(pwd)
+dir=$(pwd)
 
 installApps=("yay" "lazygit" "gcc" "cmake" "make" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
 yayInstallApps=("google-chrome" "teams" "spotify")
@@ -34,8 +34,8 @@ sudo pacman -Sqyu --noconfirm
 
 echo "[*] adding printer scripts to PATH"
 chmod +x scan
-sudo ln -s $currentDirectory/scan /usr/bin/scan
-sudo ln -s $currentDirectory/cvrt.py /usr/bin/cvrt.py
+sudo ln -s $dir/scan /usr/bin/scan
+sudo ln -s $dir/cvrt.py /usr/bin/cvrt.py
 
 echo "[*] installing printer"
 hp-setup -i -a -x HP9DFFEC.home 
