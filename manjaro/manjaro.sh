@@ -38,7 +38,7 @@ sudo ln -s $dir/scan /usr/bin/scan
 sudo ln -s $dir/cvrt.py /usr/bin/cvrt.py
 
 echo "[*] installing printer"
-hp-setup -i -a -x HP9DFFEC.home 
+hp-setup -i -a -x HP9DFFEC
 hp-plugin -i
 
 # apparently i have to do this when on gnome
