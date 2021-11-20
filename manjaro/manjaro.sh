@@ -4,7 +4,7 @@
 
 dir=$(pwd)
 
-installApps=("yay" "lazygit" "gcc" "cmake" "make" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
+installApps=("yay" "noto-fonts-cjk" "lazygit" "gcc" "cmake" "make" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
 yayInstallApps=("google-chrome" "teams" "spotify")
 
 echo "[*] detected desktop session: $DESKTOP_SESSION"
