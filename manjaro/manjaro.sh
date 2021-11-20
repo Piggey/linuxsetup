@@ -19,7 +19,8 @@ echo "[*] installing pacman packages"
 sudo pacman -Sq --noconfirm ${installApps[@]}
 
 # install yay packages
-yay -Sq --noconfirm ${yayInstallApp[@]}
+echo "[*] installing yay packages"
+yay -Sq ${yayInstallApps[@]}
 
 # install Telegram
 echo "[*] installing Telegram"
@@ -49,7 +50,7 @@ if [[ $DESKTOP_SESSION == i3 ]]; then
     installApps=(light dunst polybar alacritty xclip thunar scrot feh ttf-iosevka-nerd xfce4-settings mpd lxrandr)
     sudo pacman -Sq --noconfirm ${installApps[@]}
 
-    yay -Sq --noconfirm i3lock-color
+    yay -Sq i3lock-color
 
     # move dotfiles to $HOME
     echo "[*] moving configuration files to /home/$USER"
