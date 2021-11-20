@@ -192,7 +192,7 @@ exec_always "feh --bg-scale ~/.config/i3/imgs/wallpaper.png"
 
 # autostart some apps
 exec --no-startup-id dunst
-exec --no-startup-id picom
+exec --no-startup-id picom --experimental-backends
 exec --no-startup-id sh ~/.config/polybar/launch.sh --forest
 
 # gaps inbetween tiles
