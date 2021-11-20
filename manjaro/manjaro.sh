@@ -45,7 +45,7 @@ hp-plugin -i
 
 if [[ $DESKTOP_SESSION == i3 ]]; then
     echo "[*] setting up i3 desktop environment"
-    installApps=(light dunst polybar alacritty xclip thunar scrot feh ttf-iosevka-nerd xfce4-settings mpd lxrandr)
+    installApps=(light rofi dunst polybar alacritty xclip thunar scrot feh ttf-iosevka-nerd xfce4-settings mpd lxrandr)
     sudo pacman -Sq --noconfirm ${installApps[@]}
 
     yay -Sq i3lock-color
