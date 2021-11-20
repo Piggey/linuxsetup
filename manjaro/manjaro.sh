@@ -50,6 +50,8 @@ if [[ $DESKTOP_SESSION == i3 ]]; then
 
     yay -Sq i3lock-color
 
+    # changing screen brightness is fun!
+    sudo chmod +x /usr/bin/light
     # move dotfiles to $HOME
     echo "[*] moving configuration files to /home/$USER"
     cp -rf .vimrc .local .config /home/$USER
