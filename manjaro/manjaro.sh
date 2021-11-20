@@ -4,7 +4,7 @@
 
 dir=$(pwd)
 
-installApps=("yay" "noto-fonts-cjk" "lazygit" "gcc" "cmake" "make" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent")
+installApps=("yay" "noto-fonts-cjk" "lazygit" "gcc" "cmake" "make" "fakeroot" "hplip" "cups" "vim" "code" "discord" "steam-manjaro" "lutris" "vlc" "libreoffice-fresh" "qbittorrent" "sane" "libcups" "pyqt5")
 yayInstallApps=("google-chrome" "teams" "spotify")
 
 echo "[*] detected desktop session: $DESKTOP_SESSION"
@@ -38,6 +38,8 @@ sudo ln -s $dir/scan /usr/bin/scan
 sudo ln -s $dir/cvrt.py /usr/bin/cvrt.py
 
 echo "[*] installing printer"
+sudo systemctl start cups.service
+sudo systemctl enable cups.service
 hp-setup -i -a -x HP9DFFEC
 hp-plugin -i
 
