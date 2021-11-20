@@ -14,4 +14,3 @@ scrot -l mode=edge,width=3,color="#5e81ac" -s $filename
 
 # save to clipboard
 xclip -sel c -t image/png -i $filename 
-
