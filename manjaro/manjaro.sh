@@ -24,6 +24,7 @@ yay -Sq ${yayInstallApps[@]}
 
 # install Telegram
 [[ ! -f /tmp/linux  ]] && echo "[*] downloading Telegram" && wget -q --show-progress -P /tmp https://telegram.org/dl/desktop/linux
+
 echo "[*] extracting Telegram"
 tar xf ^linux --directory /opt --checkpoint=.200
 sudo ln -s /opt/Telegram/Telegram /usr/bin/Telegram
@@ -52,6 +53,7 @@ if [[ $DESKTOP_SESSION == i3 ]]; then
 
     # changing screen brightness is fun!
     sudo chmod +x /usr/bin/light
+
     # move dotfiles to $HOME
     echo "[*] moving configuration files to /home/$USER"
     cp -rf .vimrc .local .config /home/$USER
@@ -62,6 +64,13 @@ if [[ $DESKTOP_SESSION == i3 ]]; then
     [ $num_monitors -ge 2 ] && lxrandr
 fi
     
-echo "[*] done!"
+echo "[*] Done!"
+echo "[?] Do you wish to reboot? [Y]es/[N]o"
+read askReboot
+askReboot=$(echo $askReboot | tr '[:upper:]' '[:lower:]')
+if [[ $askReboot == y ]] || [[ $askReboot == yes ]]; then
+    reboot
+fi
+
 exit 0
 
