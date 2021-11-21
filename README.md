@@ -1,12 +1,11 @@
-# Linux Setup (ubuntu/manjaro)
+# Linux Setup (ubuntu/manjaro/endeavourOS)
 
 ## Installs:
-- Chromium Web Browser
+- Google Chrome
+- Microsoft Teams
 - Visual Studio Code
 - Discord
 - Spotify
-- Lastest Python version
-- Code::Blocks IDE
 - VLC
 - LibreOffice
 - qBitTorrent
