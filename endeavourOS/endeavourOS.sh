@@ -9,7 +9,7 @@ yay_install_apps="google-chrome teams spotify"
 
 echo "[*] detected desktop session: $DESKTOP_SESSION"
 
-setup.sh # copied from https://github.com/endeavouros-team/endeavouros-i3wm-setup.git
+./setup.sh # copied from https://github.com/endeavouros-team/endeavouros-i3wm-setup.git
 
 # install some packages
 echo "[*] installing pacman packages"
