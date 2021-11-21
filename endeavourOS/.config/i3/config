@@ -234,16 +234,16 @@ bindsym --release ctrl+Print exec --no-startup-id ~/.config/i3/area-ss.sh
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:  Terminal"
-set $ws2 "2:  Browser"
-set $ws3 "3:  Files"
-set $ws4 "4:  Messaging"
-set $ws5 "5:  Teams"
-set $ws5 "6:  Games"
+set $ws1 "1:   Terminal"
+set $ws2 "2:   Browser"
+set $ws3 "3:   Messaging"
+set $ws4 "4:   Teams"
+set $ws5 "5:   Games"
+set $ws6 "6"
 set $ws7 "7"
-set $ws8 "8:  Music"
-set $ws9 "9:  Dev"
-set $ws10 "10: Git"
+set $ws8 "8:   Music"
+set $ws9 "9:   Dev"
+set $ws10 "10:  Git"
 
 # use workspaces on different displays:
 # where you have to replace VGA-0/HDMI-0 with the names for your displays
@@ -257,18 +257,22 @@ set $ws10 "10: Git"
 # bind program to workspace and focus to them on startup:
 # assign [class="Xfce4-terminal"] $ws1
 assign [class="(?i)google-chrome"] $ws2
-assign [class="Thunar"] $ws3
-assign [class="TelegramDesktop"] $ws4
-assign [class="discord"] $ws4
-assign [class="spotify"] $ws8
+assign [class="TelegramDesktop"] $ws3
+assign [class="discord"] $ws3
+assign [class="Steam"] $ws5
+assign [class="Spotify"] $ws8
 assign [class="code-oss"] $ws9
-assign [class="Steam"] $ws6
+assign [class="Microsoft Teams - Preview"] $ws4
+
+# what the fuck fix?
+for_window [class="Spotify"] move to workspace $ws8
+for_window [class="Microsoft Teams - Preview"] move to workspacae $ws4
 
 # automatic set focus new window if it opens on another workspace then the current:
 for_window [class=Xfce4-terminal] focus
 for_window [class=(?i)google-chrome-stable] focus
 for_window [class=Thunar] focus
-for_window [class=TelegramDesktop] focus
+# for_window [class=TelegramDesktop] focus
 
 #############################################
 # autostart applications/services on login: #
@@ -391,7 +395,7 @@ bar {
 # When strip_workspace_numbers is set to yes,
 # any workspace that has a name of the form
 # “[n][:][NAME]” will display only the name.
-strip_workspace_numbers yes
+strip_workspace_numbers no 
 ##strip_workspace_name no
 
 		    colors {
