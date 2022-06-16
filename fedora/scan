@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+function start_scan ()
+{
+    # Device="hpaio:/usb/DeskJet_2130_series?serial=CN5CA4B4RS067S"
+    # Device="hpaio:/net/DeskJet_2700_series?ip=192.168.1.1"
+    Device="hpaio:/net/DeskJet_2700_series?hostname=HP9DFFEC"
+    echo "Scanning #$Num"
+    FileName="/tmp/scanfiles/img$Num.png"
+    hp-scan -d $Device -l error --res=150 --size=$Size -o $FileName
+    Num=$((Num+1))
+    sFiles+=("$FileName")
+}
+
+function rotate ()
+{
+    convert "$1" -rotate 180 "$1"
+}
+
+function print_help ()
+{
+    echo -e "USAGE: \nscan -n [NUMBERS OF PAGES] -r [ROTATE PAGES FROM FIRST(flag)] -c [FILENAME.pdf] -s [SIZE (a4/b5)]"
+    exit 0
+}
+
+function convert_pdf ()
+{
+    python /usr/bin/cvrt.py "$@"
+}
+
+[ $# -eq 0 ] && print_help
+
+[ ! -d "/tmp/scanfiles" ] && mkdir /tmp/scanfiles
+Num=0
+Size="a4"
+sFiles=()
+
+while getopts "n:rc:s:h" arg; do
+    case $arg in
+        n) Pages="$OPTARG";;
+        r) Rotate="true";;
+        c) Cvrt="$OPTARG";;
+        s) Size="$OPTARG";;
+        h) print_help;;
+        *) print_help;;
+    esac
+done
+
+echo "Number of pages to print: $Pages"
+[ "$Rotate" == "true" ] && echo "rotating image staring from the first scan"
+echo "Size set to $Size"
+
+for (( i=0; i<$Pages; i++ ))
+do
+    start_scan
+    [ "$Rotate" == "true" ] && [ $(($i%2)) == 0 ] && rotate /tmp/scanfiles/img$i.png
+    [ -z $Rotate ] && [ $(($i%2)) == 1 ] && rotate /tmp/scanfiles/img$i.png
+    [ $i -ne $(($Pages-1)) ] && echo -e "\nsleeping for 5 seconds." && sleep 5
+done
+
+if [ ! -z $Cvrt ]
+then
+    echo -e "\nsending images to jpg2pdf converter"
+    convert_pdf $Cvrt "${sFiles[@]}"
+    echo -e "\ncleaning up"
+    for file in "${sFiles[@]}"; 
+    do
+        rm $file
+    done
+    rmdir /tmp/scanfiles
+fi
+
+echo -e "\nexiting"
+exit 0
