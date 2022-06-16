@@ -7,32 +7,36 @@ if [ $# -eq 0 ]; then
 fi
 
 printer_ip=$1
-dnf_pkgs="gnome-tweaks vim"
-flatpak_pkgs="com.spotify.Client com.discordapp.Discord com.valvesoftware.Steam com.visualstudio.code org.gimp.GIMP org.qbittorrent.qBittorrent sh.ppy.osu"
+dnf_pkgs="lazygit google-chrome-stable gnome-tweaks vim code discord lpf-spotify-client steam gimp qbittorrent"
 
 # update the system
 echo "[*] updating the system"
 sudo dnf -y upgrade
 
-# install google chrome
-echo "[*] installing Google Chrome"
+## ADD ALL NEEDED REPOSITORIES
+# google chrome
 sudo dnf install fedora-workstation-repositories
 sudo dnf config-manager --set-enabled google-chrome
-sudo dnf -y install google-chrome-stable
 
-# install lazygit
-echo "[*] installing the rest of the very cool packages I need!"
+# lazygit
 sudo dnf copr enable atim/lazygit -y
-sudo dnf -y install lazygit
 
+# vscode
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+cat <<EOF | sudo tee /etc/yum.repos.d/vscode.repo
+[code]
+name=Visual Studio Code
+baseurl=https://packages.microsoft.com/yumrepos/vscode
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+EOF
+
+# discord, steam and spotify
+sudo dnf -y install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+# actually do the install
 sudo dnf -y install $dnf_pkgs
-
-# flatpak should be already installed but just in case
-echo "[*] install some cool flatpak packages"
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-# install flatpak apps
-flatpak -y install $flatpak_pkgs
 
 # add scanning scripts to PATH
 if [ $printer_ip != "skip" ]; then
